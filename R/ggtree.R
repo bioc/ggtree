@@ -454,7 +454,7 @@ collapse <- function(tree_view, node) {
 
     df[sp, "x"] <- NA
     df[sp, "y"] <- NA
-
+    
     root <- which(df$node == df$parent)
     pp <- df[node, "parent"]
     while(any(pp != root)) {
