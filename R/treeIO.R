@@ -356,6 +356,11 @@ merge_phylo_anno.paml_rst <- function(df, model) {
 }
 
 
+##' @method fortify phangorn
+##' @export
+fortify.phangorn <- fortify.paml_rst
+
+
 ##' @method fortify hyphy
 ##' @export
 fortify.hyphy <- fortify.paml_rst
@@ -373,7 +378,7 @@ fortify.jplace <- function(model, data,
     df <- df %add2% place
 
     df <- scaleY(model@phylo, df, yscale, layout, ...)
-    
+
     append_extraInfo(df, model)    
 }
 
@@ -555,13 +560,14 @@ as.data.frame.phylo_ <- function(x, layout="rectangular",
     
     if (layout == "circular") {
         idx <- match(1:N, order(res$y))
-        angle <- -360/(N+1) * (1:N+1)
+        angle <- -360/(1+N) * (1:N+1)
         angle <- angle[idx]
-        res$angle <- angle
+        res$angle <- angle + 90
     } 
     
     return(res)
 }
+
 
 ##' @method fortify raxml
 ##' @export
@@ -571,6 +577,10 @@ fortify.raxml <- function(model, data, layout= "rectangular",
     df <- merge(df, model@bootstrap, by.x="node", by.y="node", all.x=TRUE)
     append_extraInfo(df, model)
 }
+
+##' @method fortify apeBootstrap
+##' @export
+fortify.apeBootstrap <- fortify.raxml
 
 
 ##' @method fortify multiPhylo

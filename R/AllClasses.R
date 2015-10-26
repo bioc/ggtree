@@ -4,6 +4,28 @@ setOldClass("gg")
 setOldClass("ggplot")
 
 
+##' Class "apeBootstrap"
+##' This class stores ape bootstrapping analysis result
+##'
+##'
+##' @name apeBootstrap-class
+##' @docType class
+##' @slot phylo phylo object of treetext
+##' @slot fields available features
+##' @slot bootstrap bootstrap value
+##' @slot extraInfo extra information
+##' @exportClass apeBootstrap
+##' @author Guangchuang Yu \url{http://ygc.name}
+##' @keywords classes
+setClass("apeBootstrap",
+         representation = representation(
+             phylo = "phylo",
+             fields = "character",
+             bootstrap = "data.frame",
+             extraInfo = "data.frame"
+         )
+         )
+
 ##' Class "hyphy"
 ##' This class stores information of HYPHY output
 ##'
@@ -257,4 +279,36 @@ setClass("beast",
              file        = "character",
              extraInfo   = "data.frame"
              )
+         )
+
+
+
+##' Class "phangorn"
+##' This class stores ancestral sequences inferred from 'phangorn'
+##'
+##'
+##' @name phangorn-class
+##' @docType class
+##' @slot fields available attributes
+##' @slot phylo phylo object
+##' @slot seq_type one of "NT" and "AA"
+##' @slot tip_seq sequences of tips
+##' @slot ancseq ancenstral sequences
+##' @slot subs sequence substitution
+##' @slot AA_subs Amino acid sequence substitution
+##' @slot extraInfo extra information
+##' @exportClass phangorn
+##' @author Guangchuang Yu \url{http://ygc.name}
+##' @seealso \linkS4class{paml_rst}
+##' @keywords classes
+setClass("phangorn",
+         representation = representation(
+             fields = "character",
+             phylo = "phylo",
+             seq_type = "character",
+             tip_seq = "character",
+             ancseq = "character",
+             subs = "data.frame",
+             AA_subs = "data.frame",
+             extraInfo = "data.frame")
          )

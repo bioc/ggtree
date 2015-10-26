@@ -1,3 +1,10 @@
+CHANGES IN VERSION 1.2.2
+------------------------
+ o add support of ape bootstrap analysis <2015-10-26, Mon>
+   see https://github.com/GuangchuangYu/ggtree/issues/20
+ o add support of ancestral sequences inferred by phangorn <2015-10-26, Mon>
+   see https://github.com/GuangchuangYu/ggtree/issues/21
+
 CHANGES IN VERSION 1.1.20
 ------------------------
  o fixed bug in geom_tiplab when x contains NA (eg, removing by collapse function) <2015-10-01, Thu>

@@ -3,6 +3,7 @@
 \docType{methods}
 \name{groupOTU}
 \alias{groupOTU}
+\alias{groupOTU,apeBootstrap-method}
 \alias{groupOTU,beast-method}
 \alias{groupOTU,codeml-method}
 \alias{groupOTU,codeml_mlc-method}
@@ -11,6 +12,7 @@
 \alias{groupOTU,hyphy-method}
 \alias{groupOTU,jplace-method}
 \alias{groupOTU,paml_rst-method}
+\alias{groupOTU,phangorn-method}
 \alias{groupOTU,phylo-method}
 \alias{groupOTU,r8s-method}
 \alias{groupOTU,raxml-method}
@@ -35,6 +37,10 @@ groupOTU(object, focus, group_name = "group", ...)
 \S4method{groupOTU}{codeml_mlc}(object, focus, group_name = "group")
 
 \S4method{groupOTU}{paml_rst}(object, focus, group_name = "group")
+
+\S4method{groupOTU}{apeBootstrap}(object, focus, group_name = "group")
+
+\S4method{groupOTU}{phangorn}(object, focus, group_name = "group")
 
 \S4method{groupOTU}{hyphy}(object, focus, group_name = "group")
 
