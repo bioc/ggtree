@@ -3,28 +3,11 @@ setOldClass("multiPhylo")
 setOldClass("gg")
 setOldClass("ggplot")
 
-
-##' Class "apeBootstrap"
-##' This class stores ape bootstrapping analysis result
-##'
-##'
-##' @name apeBootstrap-class
-##' @docType class
-##' @slot phylo phylo object of treetext
-##' @slot fields available features
-##' @slot bootstrap bootstrap value
-##' @slot extraInfo extra information
-##' @exportClass apeBootstrap
-##' @author Guangchuang Yu \url{http://ygc.name}
-##' @keywords classes
-setClass("apeBootstrap",
-         representation = representation(
-             phylo = "phylo",
-             fields = "character",
-             bootstrap = "data.frame",
-             extraInfo = "data.frame"
-         )
-         )
+supported_tree_object <- function() {
+    c("hyphy", "r8s", "nhx", "apeBootstrap", "raxml",
+      "paml_rst", "phangorn", "codeml_mlc", "codeml",
+      "jplace", "beast")
+}
 
 ##' Class "hyphy"
 ##' This class stores information of HYPHY output
@@ -88,6 +71,54 @@ setClass("r8s",
              )
          )
 
+##' Class "nhx"
+##' This class stores nhx tree
+##'
+##'
+##' @name nhx-class
+##' @rdname nhx-class
+##' @docType class
+##' @slot file input file
+##' @slot fields available feature
+##' @slot phylo phylo object
+##' @slot nhx_tags tag information in nhx file
+##' @slot extraInfo extra information
+##' @exportClass nhx
+##' @author Guangchuang Yu \url{http://ygc.name}
+##' @keywords classes
+setClass("nhx",
+         representation = representation(
+             file = "character",
+             fields = "character",
+             phylo = "phylo",
+             nhx_tags = "data.frame",
+             extraInfo = "data.frame"
+         )
+         )
+
+##' Class "apeBootstrap"
+##' This class stores ape bootstrapping analysis result
+##'
+##'
+##' @name apeBootstrap-class
+##' @docType class
+##' @slot phylo phylo object of treetext
+##' @slot fields available features
+##' @slot bootstrap bootstrap value
+##' @slot extraInfo extra information
+##' @exportClass apeBootstrap
+##' @author Guangchuang Yu \url{http://ygc.name}
+##' @keywords classes
+setClass("apeBootstrap",
+         representation = representation(
+             phylo = "phylo",
+             fields = "character",
+             bootstrap = "data.frame",
+             extraInfo = "data.frame"
+         )
+         )
+
+
 ##' Class "raxml"
 ##' This class stores RAxML bootstrapping analysis result
 ##'
@@ -106,12 +137,9 @@ setClass("r8s",
 setClass("raxml",
          representation = representation(
              file       = "character",
-             fields     = "character",
-             treetext   = "character",
-             phylo      = "phylo",
-             bootstrap  = "data.frame",
-             extraInfo  = "data.frame"
-             )
+             treetext   = "character"
+         ),
+         contains = "apeBootstrap"
          )
 
 
@@ -159,6 +187,37 @@ setClass("paml_rst",
              extraInfo        = "data.frame"
          )
          )
+
+##' Class "phangorn"
+##' This class stores ancestral sequences inferred from 'phangorn'
+##'
+##'
+##' @name phangorn-class
+##' @docType class
+##' @slot fields available attributes
+##' @slot phylo phylo object
+##' @slot seq_type one of "NT" and "AA"
+##' @slot tip_seq sequences of tips
+##' @slot ancseq ancenstral sequences
+##' @slot subs sequence substitution
+##' @slot AA_subs Amino acid sequence substitution
+##' @slot extraInfo extra information
+##' @exportClass phangorn
+##' @author Guangchuang Yu \url{http://ygc.name}
+##' @seealso \linkS4class{paml_rst}
+##' @keywords classes
+setClass("phangorn",
+         representation = representation(
+             fields = "character",
+             phylo = "phylo",
+             seq_type = "character",
+             tip_seq = "character",
+             ancseq = "character",
+             subs = "data.frame",
+             AA_subs = "data.frame",
+             extraInfo = "data.frame")
+         )
+
 
 ##' Class "codeml_mlc"
 ##' This class stores information of mlc file frm codeml output
@@ -279,36 +338,4 @@ setClass("beast",
              file        = "character",
              extraInfo   = "data.frame"
              )
-         )
-
-
-
-##' Class "phangorn"
-##' This class stores ancestral sequences inferred from 'phangorn'
-##'
-##'
-##' @name phangorn-class
-##' @docType class
-##' @slot fields available attributes
-##' @slot phylo phylo object
-##' @slot seq_type one of "NT" and "AA"
-##' @slot tip_seq sequences of tips
-##' @slot ancseq ancenstral sequences
-##' @slot subs sequence substitution
-##' @slot AA_subs Amino acid sequence substitution
-##' @slot extraInfo extra information
-##' @exportClass phangorn
-##' @author Guangchuang Yu \url{http://ygc.name}
-##' @seealso \linkS4class{paml_rst}
-##' @keywords classes
-setClass("phangorn",
-         representation = representation(
-             fields = "character",
-             phylo = "phylo",
-             seq_type = "character",
-             tip_seq = "character",
-             ancseq = "character",
-             subs = "data.frame",
-             AA_subs = "data.frame",
-             extraInfo = "data.frame")
          )

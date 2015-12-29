@@ -105,18 +105,31 @@ rm.singleton.newick <- function(nwk, outfile = NULL) {
 ##' @method fortify beast
 ##' @export
 fortify.beast <- function(model, data,
-                          layout    = "rectangular",
-                          yscale    = "none",
-                          ladderize = TRUE,
-                          right     =FALSE,
-                          ndigits   = NULL,
+                          layout        = "rectangular",
+                          yscale        = "none",
+                          ladderize     = TRUE,
+                          right         = FALSE,
+                          branch.length = "branch.length",
+                          ndigits       = NULL,
                           mrsd = NULL, ...) {
 
-    phylo <- get.tree(model)
+    phylo <- set_branch_length(model, branch.length)
+
     df    <- fortify(phylo, layout=layout,
                      ladderize=ladderize, right=right, mrsd = mrsd, ...)
     
     stats <- model@stats
+
+    scn <- colnames(stats)
+    scn <- scn[scn != 'node']
+    
+    for (cn in scn) {
+        if (cn %in% colnames(df)) {
+            colnames(stats)[colnames(stats) == cn] <- paste0(cn, "_")
+            msg <- paste("feature", cn, "was renamed to", paste0(cn, "_"), "due to name conflict...")
+            warning(msg)
+        }
+    }
 
     idx <- which(colnames(stats) != "node")
     for (ii in idx) {
@@ -247,11 +260,9 @@ fortify.codeml <- function(model, data,
         phylo <- get.tree(model@rst)
     } else {
         if (length == "mlc.branch.length") {
-            length = "branch.length"
+            length <- "branch.length"
         }
-        phylo <- fortify.codeml_mlc_(model@mlc, data, layout,
-                                     ladderize, right,
-                                     branch.length = length, ...)
+        phylo <- set_branch_length(model@mlc, length)
     }
     
     df <- fortify(phylo, data, layout, ladderize, right,
@@ -260,7 +271,7 @@ fortify.codeml <- function(model, data,
     res <- merge_phylo_anno.codeml_mlc(df, dNdS, ndigits)
     df <- merge_phylo_anno.paml_rst(res, model@rst)
     df <- scaleY(phylo, df, yscale, layout, ...)
-
+    
     append_extraInfo(df, model)
 }
 
@@ -276,11 +287,11 @@ fortify.codeml_mlc <- function(model, data,
                                ndigits       = NULL,
                                mrsd          = NULL,
                                ...) {
+
+    phylo <- set_branch_length(model, branch.length)
         
-    phylo <- fortify.codeml_mlc_(model, data, layout,
-                                 ladderize, right,
-                                 branch.length, mrsd=mrsd, ...)
-    df <- fortify(phylo, data, layout, ladderize, right, branch.length=branch.length, ...)
+    df <- fortify(phylo, data, layout, ladderize, right,
+                  branch.length=branch.length, mrsd=mrsd, ...)
     
     dNdS <- model@dNdS
 
@@ -314,25 +325,9 @@ fortify.codeml_mlc_ <- function(model, data,
                                 right         = FALSE,
                                 branch.length = "branch.length",
                                 ...) {
-    dNdS <- model@dNdS
-    length <- match.arg(branch.length, c("none", "branch.length",
-                                         colnames(dNdS)[-c(1,2)]))
-    phylo <- get.tree(model)
 
-    if (! length %in%  c("branch.length", "none")) {
-        edge <- as.data.frame(phylo$edge)
-        colnames(edge) <- c("parent", "node")
-        
-        dd <- merge(edge, dNdS,
-                    by.x  = c("node", "parent"),
-                    by.y  = c("node", "parent"),
-                    all.x = TRUE)
-        dd <- dd[match(edge$node, dd$node),]
-        phylo$edge.length <- dd[, length]
-    }
-
-    return(phylo)
 }
+
 
     
 ##' @method fortify paml_rst
@@ -439,7 +434,9 @@ as.phylo.phylo4 <- function(phylo4) {
     return(phylo)
 }
 
-
+##' fortify a phylo to data.frame
+##'
+##' 
 ##' @rdname fortify
 ##' @title fortify
 ##' @param model phylo object
@@ -476,10 +473,12 @@ fortify.phylo <- function(model, data, layout="rectangular",
     aa <- names(attributes(tree))
     group <- aa[ ! aa %in% c("names", "class", "order", "reroot", "node_map")]
     if (length(group) > 0) {
-        ## groupOTU & groupClade
-        group_info <- attr(tree, group)
-        if (length(group_info) == nrow(df)) {
-            df[, group] <- group_info
+        for (group_ in group) {
+            ## groupOTU & groupClade
+            group_info <- attr(tree, group_)
+            if (length(group_info) == nrow(df)) {
+                df[, group_] <- group_info
+            }
         }
     }
     
@@ -493,6 +492,9 @@ fortify.phylo <- function(model, data, layout="rectangular",
     return(df)
 }
 
+##' convert phylo to data.frame
+##'
+##' 
 ##' @title as.data.frame
 ##' @param x phylo object
 ##' @param row.names omitted here
@@ -557,15 +559,25 @@ as.data.frame.phylo_ <- function(x, layout="rectangular",
 
     ## add branch mid position
     res <- calculate_branch_mid(res)
-    
-    #if (layout == "circular") {
+
+    ## angle for all layout, if 'rectangular', user use coord_polar, can still use angle
+    ## if (layout == "circular") {
     idx <- match(1:N, order(res$y))
     angle <- -360/(1+N) * (1:N+1)
     angle <- angle[idx]
     res$angle <- angle + 90
-    #} 
+    ## } 
     
     return(res)
+}
+
+##' @method fortify nhx
+##' @export
+fortify.nhx <- function(model, data, layout= "rectangular",
+                        ladderize=TRUE, right=FALSE, mrsd=NULL, ...) {
+    df <- fortify(get.tree(model), layout=layout, ladderize=ladderize, right=right, mrsd=mrsd, ...)
+    df <- merge(df, model@nhx_tags, by.x="node", by.y="node", all.x=TRUE)
+    append_extraInfo(df, model)
 }
 
 

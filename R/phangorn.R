@@ -22,7 +22,6 @@ phyPML <- function(pmlTree, type = "ml") {
         names(sequences) <- c(tr$tip.label, tr$node.label)
     }
     
-    
     seq_type <- get_seqtype(sequences)
     res <- new("phangorn",
                phylo = tr,
