@@ -133,7 +133,25 @@ get_heatmap_column_position <- function(treeview, by="bottom") {
 ##' @importFrom ggplot2 scale_fill_manual
 ##' @author Guangchuang Yu
 msaplot <- function(p, fasta, offset=0, width=1, color=NULL, window=NULL){
-    aln <- readBStringSet(fasta)
+    if (missingArg(fasta)) {
+        aln <- NULL
+    } else if (is(fasta, "BStringSet")) {
+        aln <- fasta
+    } else if (is(fasta, "character")) {
+        aln <- readBStringSet(fasta)
+    } else {
+        aln <- NULL
+    }
+        
+    if (is(p, "phylip")) {
+        aln <- p@sequence
+        p <- ggtree(p) + geom_tiplab()
+    }
+
+    if (is.null(aln)) {
+        stop("multiple sequence alignment is not available...\n-> check the parameter 'fasta'...")
+    }
+    
     if (is.null(window)) {
         window <- c(1, width(aln)[1])
     }
@@ -213,7 +231,7 @@ msaplot <- function(p, fasta, offset=0, width=1, color=NULL, window=NULL){
 ##'
 ##' 
 ##' @title scale_x_ggtree
-##' @param p tree view
+##' @param tree_view tree view
 ##' @param breaks breaks for tree
 ##' @param labels lables for corresponding breaks
 ##' @return tree view
@@ -221,7 +239,9 @@ msaplot <- function(p, fasta, offset=0, width=1, color=NULL, window=NULL){
 ##' @importFrom ggplot2 scale_x_date
 ##' @export
 ##' @author Guangchuang Yu
-scale_x_ggtree <- function(p, breaks=NULL, labels=NULL) {
+scale_x_ggtree <- function(tree_view, breaks=NULL, labels=NULL) {
+    p <- get_tree_view(tree_view)
+    
     mrsd <- attr(p, "mrsd")
     if (!is.null(mrsd) && class(p$data$x) == "Date") {
         x <- Date2decimal(p$data$x)

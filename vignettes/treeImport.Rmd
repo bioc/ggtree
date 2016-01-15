@@ -37,13 +37,14 @@ The `ggtree` package should not be viewed solely as a standalone software. While
 
 # Supported File Formats
 
-Most of the tree viewer software (including `R` packages) focus on `Newick` and `Nexus` file format, while there are file formats from different evolution analysis software that contain supporting evidences within the file that are ready for annotating a phylogenetic tree.
-The `ggtree` package define several parser functions and `S4` classes to store statistical evidences inferred by commonly used software packages. It supports several file format, including:
+Most of the tree viewer software (including `R` packages) focus on `Newick` and `Nexus` file formats, while there are file formats from different evolution analysis software that contain supporting evidences within the file that are ready for annotating a phylogenetic tree.
+The `ggtree` package define several parser functions and `S4` classes to store statistical evidences inferred by commonly used software packages. It supports several file formats, including:
 
 + Newick (via `ape`)
 + Nexus (via `ape`)
 + New Hampshire eXtended format (NHX)
 + Jplace
++ Phylip
 
 and software output from:
 
@@ -108,6 +109,9 @@ For each class, we defined _`get.fields`_ method to get the annotation features 
 The _`groupOTU`_ method is used for clustering related OTUs (from tips to their most recent common ancestor). Related OTUs are not necessarily within a clade, they can be distantly related. _`groupOTU`_ works fine for monophyletic (clade), polyphyletic and paraphyletic, while _`groupClade`_ only works for clade (monophyletic). These methods are useful for clustering related OTUs or clades.
 
 The _`fortify`_ method is used to convert tree object to a `data.frame` which is familiar by `R` users and easy to manipulate. The output `data.frame` contains tree information and all evolutionary evidences (if available, e.g. _*dN/dS*_ in `codeml` object).
+
+Detail descriptions of `slots` defined in each class are documented in class man pages. Users can use `class?className` (e.g. `class?beast`) to access man page of a class.
+
 
 # Getting Tree Data into R
 
@@ -282,6 +286,23 @@ ggtree(nhx) + geom_tiplab() + geom_point(aes(color=S), size=5, alpha=.5) +
     theme(legend.position="right") +
     geom_text(aes(label=branch.length, x=branch), vjust=-.5) + 
     xlim(NA, 0.3)
+```
+
+## Parsing Phylip tree
+
+Phylip format contains taxa sequences with Newick tree text.
+
+```{r}
+phyfile <- system.file("extdata", "sample.phy", package="ggtree")
+phylip <- read.phylip(phyfile)
+phylip
+ggtree(phylip) + geom_tiplab()
+```
+
+User can view sequence alignment with the tree via `msaplot()` function.
+
+```{r fig.width=10, fig.height=6}
+msaplot(phylip, offset=1)
 ```
 
 
