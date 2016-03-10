@@ -32,12 +32,8 @@ download.phylopic <- function(id, size=512, color="black", alpha=1) {
     imgfile <- tempfile(fileext = ".png")
     download.phylopic_internal(id, size, imgfile)
 
-    EBImage <- "EBImage"
-    require(EBImage, character.only = TRUE)
-
-    readImage <- eval(parse(text="readImage"))
-    channel <- eval(parse(text="channel"))
-    
+    requireNamespace("EBImage")
+    channel <- eval(parse(text=paste0("EBImage::", "channel")))
     img <- readImage(imgfile)
        
     color <- col2rgb(color) / 255
@@ -51,6 +47,8 @@ download.phylopic <- function(id, size=512, color="black", alpha=1) {
     return(img)
 }
 
+##' @importFrom utils download.file
+##' @importFrom utils modifyList
 download.phylopic_internal <- function(id, size=512, outfile=NULL) {
     size %<>% as.character %>%
         match.arg(c("64", "128", "256", "512", "1024"))
@@ -95,8 +93,9 @@ phylopic <- function(tree_view, phylopic_id,
             if (is.null(node)) {
                 stop("node or x and y should not be NULL...")
             }
-            x <- tree_view$data[node, "x"]
-            y <- tree_view$data[node, "y"]
+            df <- tree_view$data
+            x <- df[match(node, df$node), "x"]
+            y <- df[match(node, df$node), "y"]
         }
         AR <- getAR(img)
         xmin <- x - width/2
@@ -136,10 +135,6 @@ annotation_image <- function(tree_view, img_info, width=0.1, align=TRUE, linetyp
     x <- df[idx, "x"]
     y <- df[idx, "y"]
 
-    EBImage <- "EBImage"
-    require(EBImage, character.only = TRUE)
-    readImage <- eval(parse(text="readImage"))
-    
     images <- lapply(img_info[,2], readImage)
 
     ARs <- sapply(images, getAR)
@@ -148,11 +143,11 @@ annotation_image <- function(tree_view, img_info, width=0.1, align=TRUE, linetyp
     if (align) {
         xmin <- max(df$x) + offset
         xmin <- rep(xmin, length(x))
-        xmax <- xmin + width
     } else {
-        xmin <- x - width/2
-        xmax <- x + width/2
+        xmin <- x - width/2 + offset
     }
+    xmax <- xmin + width
+    
     ymin <- y - ARs * width/2
     ymax <- y + ARs * width/2
     image_layers <- lapply(1:length(xmin), function(i) {
