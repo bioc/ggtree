@@ -26,32 +26,35 @@
 ##' @author Guangchuang Yu
 gheatmap <- function(p, data, offset=0, width=1, low="green", high="red", color="white",
                      colnames=TRUE, colnames_position="bottom", colnames_level=NULL, font.size=4) {
-
+    
     colnames_position %<>% match.arg(c("bottom", "top"))
     variable <- value <- lab <- y <- NULL
     
     ## if (is.null(width)) {
     ##     width <- (p$data$x %>% range %>% diff)/30
     ## }
-
+    
     ## convert width to width of each cell
     width <- width * (p$data$x %>% range %>% diff) / ncol(data)
     
     isTip <- x <- y <- variable <- value <- from <- to <- NULL
- 
+    
     df <- p$data
     df <- df[df$isTip,]
     start <- max(df$x) + offset
-
-    dd <- data[df$label[order(df$y)],]
+    
+    dd <- data
+    ## dd$lab <- rownames(dd)
+    lab <- df$label[order(df$y)]
+    dd <- dd[lab, ]
     dd$y <- sort(df$y)
-
-    dd$lab <- rownames(dd)
+    dd$lab <- lab
     ## dd <- melt(dd, id=c("lab", "y"))
     dd <- gather(dd, variable, value, -c(lab, y))
-    
-    if (any(dd$value == "")) {
-        dd$value[dd$value == ""] <- NA
+
+    i <- which(dd$value == "")
+    if (length(i) > 0) {
+        dd$value[i] <- NA
     }
     if (is.null(colnames_level)) {
         dd$variable <- factor(dd$variable, levels=colnames(data))
@@ -61,13 +64,14 @@ gheatmap <- function(p, data, offset=0, width=1, low="green", high="red", color=
     V2 <- start + as.numeric(dd$variable) * width
     mapping <- data.frame(from=dd$variable, to=V2)
     mapping <- unique(mapping)
-
+    
     dd$x <- V2
-
+    dd$width <- width
+    
     if (is.null(color)) {
-        p2 <- p + geom_tile(data=dd, aes(x, y, fill=value), inherit.aes=FALSE)
+        p2 <- p + geom_tile(data=dd, aes(x, y, fill=value, width=width), inherit.aes=FALSE)
     } else {
-        p2 <- p + geom_tile(data=dd, aes(x, y, fill=value), color=color, inherit.aes=FALSE)
+        p2 <- p + geom_tile(data=dd, aes(x, y, fill=value, width=width), color=color, inherit.aes=FALSE)
     }
     if (is(dd$value,"numeric")) {
         p2 <- p2 + scale_fill_gradient(low=low, high=high, na.value="white")
@@ -83,9 +87,9 @@ gheatmap <- function(p, data, offset=0, width=1, low="green", high="red", color=
         }
         p2 <- p2 + geom_text(data=mapping, aes(x=to, label=from), y=y, size=font.size, inherit.aes = FALSE)
     }
-
+    
     p2 <- p2 + theme(legend.position="right", legend.title=element_blank())
-    p2 <- p2 + guides(fill = guide_legend(override.aes = list(colour = NULL)))
+    ## p2 <- p2 + guides(fill = guide_legend(override.aes = list(colour = NULL)))
     
     attr(p2, "mapping") <- mapping
     return(p2)
