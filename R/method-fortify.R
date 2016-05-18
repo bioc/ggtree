@@ -412,6 +412,15 @@ fortify.phylo4 <- function(model, data, layout="rectangular", yscale="none",
     scaleY(phylo, df, yscale, layout, ...)
 }
 
+##' @method fortify phylo4d
+##' @export
+fortify.phylo4d <- function(model, data, layout="rectangular", yscale="none",
+                            ladderize=TRUE, right=FALSE, mrsd=NULL, ...) {
+    res <- fortify.phylo4(model, data, layout, yscale, ladderize, right, mrsd, ...)
+    tdata <- model@data[match(res$node, rownames(model@data)), , drop=FALSE]
+    cbind(res, tdata)
+}
+
 as.phylo.phylo4 <- function(phylo4) {
     edge <- phylo4@edge
     edge <- edge[edge[,1] != 0, ]
@@ -575,9 +584,11 @@ as.data.frame.phylo_ <- function(x, layout="rectangular",
     ## angle for all layout, if 'rectangular', user use coord_polar, can still use angle
     ## if (layout == "circular") {
     idx <- match(1:N, order(res$y))
-    angle <- -360/(1+N) * (1:N+1)
+    ## angle <- -360/(3+N) * (1:N+1)
+    angle <- 360/(3+N) * (1:N+1)
     angle <- angle[idx]
-    res$angle <- angle + 90
+    ## res$angle <- angle + 90
+    res$angle <- angle
     ## } 
     
     return(res)

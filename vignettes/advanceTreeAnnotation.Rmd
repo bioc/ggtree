@@ -84,19 +84,7 @@ msaplot(ggtree(beast_tree), fasta, window=c(150, 200)) + coord_polar(theta='y')
 
 # Annotate a phylogenetic tree with insets
 
-`ggtree` implemented a function, `subview`, that can add subplots on a ggplot2 object. It had successful applied to [plot pie graphs on map](http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396).
-
-```{r fig.width=8, fig.height=8, warning=F}
-set.seed(2016-01-04)
-tr <- rtree(30)
-tr <- groupClade(tr, node=45)
-p <- ggtree(tr, aes(color=group)) + geom_tippoint()
-p1 <- p + geom_hilight(node=45)
-p2 <- viewClade(p, node=45) + geom_tiplab()
-subview(p2, p1+theme_transparent(), x=2.3, y=28.5)
-```
-
-To make it more easy to use subview function for annotating taxa with subplots, *ggtree* provides a function, `inset`, for adding subplots to a phylogenetic tree. The input is a tree graphic object and a named list of ggplot graphic objects (can be any kind of charts), these objects should named by node numbers. To facilitate adding bar and pie charts (e.g. summarized stats of results from ancestral reconstruction) to phylogenetic tree, *ggtree* provides `nodepie` and `nodebar` functions to create a list of pie or bar charts.
+`ggtree` provides a function, `inset`, for adding subplots to a phylogenetic tree. The input is a tree graphic object and a named list of ggplot graphic objects (can be any kind of charts), these objects should named by node numbers. To facilitate adding bar and pie charts (e.g. summarized stats of results from ancestral reconstruction) to phylogenetic tree, *ggtree* provides `nodepie` and `nodebar` functions to create a list of pie or bar charts.
 
 ## Annotate with bar charts
 
@@ -182,7 +170,7 @@ inset(p2, bx2, width=.2, height=.03, vjust=.04, hjust=p2$data$x[1:15]-4) + xlim(
 
 ## Annotate with image files
 
-```{r}
+```{r eval=FALSE}
 imgfile <- tempfile(, fileext=".png")
 download.file("https://avatars1.githubusercontent.com/u/626539?v=3&u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&s=140", destfile=imgfile, mode='wb')
 img <- list(imgfile, imgfile)
@@ -190,6 +178,7 @@ names(img) <- c("18", "22")
 inset(p, img)
 ```
 
+![](figures/inset_img.png)
 
 # Align tree with other plots on a page
 
