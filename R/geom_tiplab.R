@@ -72,6 +72,8 @@ geom_tiplab <- function(mapping=NULL, hjust = 0, align = FALSE, linetype = "dott
 geom_tiplab2 <- function(mapping=NULL, hjust=0, ...) {
 
     angle <- NULL
+    ## m1 <- aes(subset=(abs(angle) < 90), angle=angle)
+    ## m2 <- aes(subset=(abs(angle) >= 90), angle=angle+180)
     m1 <- aes(subset=(angle < 90 | angle > 270), angle=angle)
     m2 <- aes(subset=(angle >= 90 & angle <=270), angle=angle+180)
     
