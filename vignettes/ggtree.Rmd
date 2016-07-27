@@ -31,7 +31,6 @@ library("Biostrings")
 library("ape")
 library("ggplot2")
 library("ggtree")
-library("phangorn")
 ```
 
 
@@ -112,8 +111,7 @@ Visualizing an annotated phylogenetic tree with numerical matrix (e.g. genotype 
 + [ggtree utilities](ggtreeUtilities.html)
 
 
-More documents can be found in <http://guangchuangyu.github.io/ggtree>.
-
+More documents can be found in <https://guangchuangyu.github.io/ggtree>.
 
 ## Feedback ##
 
