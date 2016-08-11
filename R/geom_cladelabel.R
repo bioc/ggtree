@@ -88,7 +88,7 @@ stat_cladeBar <- function(mapping=NULL, data=NULL,
                           geom="segment", position="identity",
                           node, offset, align,  ...,
                           show.legend=NA, inherit.aes=FALSE, na.rm=FALSE) {
-    default_aes <- aes_(x=~x, y=~y, node=~node, parent=~parent)
+    default_aes <- aes_(x=~x, y=~y, node=~node, parent=~parent, xend=~x, yend=~y)
     if (is.null(mapping)) {
         mapping <- default_aes
     } else {

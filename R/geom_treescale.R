@@ -22,7 +22,7 @@ geom_treescale <- function(x=NULL, y=NULL, width=NULL, offset=NULL, color="black
     na.rm=FALSE
     inherit.aes=FALSE
 
-    default_aes <- aes_(x=~x, y=~y)
+    default_aes <- aes_(x=~x, y=~y, xend=~x, yend=~y, label=~label)
     mapping <- default_aes
     
     list(
@@ -45,7 +45,7 @@ stat_treeScaleLine <- function(mapping=NULL, data=NULL,
                            xx, yy, width, offset, color, ..., 
                            show.legend=NA, inherit.aes=FALSE, na.rm=FALSE){
     
-    default_aes <- aes_(x=~x, y=~y)
+    default_aes <- aes_(x=~x, y=~y, xend=~x, yend=~x)
     if (is.null(mapping)) {
         mapping <- default_aes
     } else {
