@@ -35,7 +35,8 @@ subview <- function(mainview, subview, x, y, width=.1, height=.1) {
     } else {
         stop("subview should be a ggplot or grob object, or an image file...")
     }
-    
+    width <- width/2
+    height <- height/2
     mainview + annotation_custom(
         sv,
         xmin = x - width*xrng,
