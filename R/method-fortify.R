@@ -401,7 +401,7 @@ fortify.phylo4d <- function(model, data, layout="rectangular", yscale="none",
     res <- fortify(phylo, data, layout, branch.length=branch.length,
                    ladderize, right, mrsd, ...)
     tdata <- model@data[match(res$node, rownames(model@data)), , drop=FALSE]
-    cbind(res, tdata)
+    df <- cbind(res, tdata)
     scaleY(as.phylo.phylo4(model), df, yscale, layout, ...)
 }
 
