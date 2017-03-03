@@ -16,7 +16,12 @@ geom_range <- function(range="height_0.95_HPD", ...) {
 
     default_aes <- aes_(x=~x, y=~y, xend=~x, yend=~y)
 
-    mapping <- modifyList(default_aes, aes_string(branch.length="branch.length", label=range))
+    if (grepl("^height", range)) {
+        mapping <- modifyList(default_aes, aes_string(branch.length="height", label=range))
+    } else {
+        mapping <- modifyList(default_aes, aes_string(branch.length="branch.length", label=range))
+    }
+
 
     layer(
         stat = StatRange,
