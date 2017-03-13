@@ -12,11 +12,11 @@ library("txtplot")
 library("ypages")
 ```
 
-`r badge_release("ggtree", "green")`
-`r badge_devel("ggtree", "green")`
+`r badge_bioc_release("ggtree", "green")`
+`r badge_devel("guangchuangyu/ggtree", "green")`
 [![Bioc](http://www.bioconductor.org/shields/years-in-bioc/ggtree.svg)](https://www.bioconductor.org/packages/devel/bioc/html/ggtree.html#since)
-`r badge_download("ggtree", "total", "blue")`
-`r badge_download("ggtree", "month", "blue")`
+`r badge_bioc_download("ggtree", "total", "blue")`
+`r badge_bioc_download("ggtree", "month", "blue")`
 
 
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
@@ -70,8 +70,8 @@ txtplot(d$year, d$cites, xlim=c(2015, 2017))
 ### Download stats
 
 [![download](http://www.bioconductor.org/shields/downloads/ggtree.svg)](https://bioconductor.org/packages/stats/bioc/ggtree/)
-`r badge_download("ggtree", "total", "blue")`
-`r badge_download("ggtree", "month", "blue")`
+`r badge_bioc_download("ggtree", "total", "blue")`
+`r badge_bioc_download("ggtree", "month", "blue")`
 
 
 ```{r echo=F, comment=NA}
