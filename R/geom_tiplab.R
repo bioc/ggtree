@@ -19,12 +19,17 @@
 ##' tr <- rtree(10)
 ##' ggtree(tr) + geom_tiplab()
 geom_tiplab <- function(mapping=NULL, hjust = 0,  align = FALSE, linetype = "dotted", linesize=1, geom="text",  offset=0, ...) {
-    geom <- match.arg(geom, c("text", "label"))
+    geom <- match.arg(geom, c("text", "label", "image", "phylopic"))
     if (geom == "text") {
-        text_geom <- geom_text2
-    } else {
-        text_geom <- geom_label2
+        label_geom <- geom_text2
+    } else if (geom == "label") {
+        label_geom <- geom_label2
+    } else if (geom == "image") {
+        label_geom <- get_fun_from_pkg("ggimage", "geom_image")
+    } else if (geom == "phylopic") {
+        label_geom <- get_fun_from_pkg("ggimage", "geom_phylopic")
     }
+
     x <- y <- label <- isTip <- node <- NULL
     if (align == TRUE) {
         self_mapping <- aes(x = max(x, na.rm=TRUE) + diff(range(x, na.rm=TRUE))/200, y = y, label = label, node = node, subset = isTip)
@@ -47,24 +52,21 @@ geom_tiplab <- function(mapping=NULL, hjust = 0,  align = FALSE, linetype = "dot
                                xend = x + diff(range(x, na.rm=TRUE))/200,
                                y = y, yend = y,
                                node = node,
+                               label = label,
                                subset = isTip)
         if (!is.null(mapping))
             segment_mapping <- modifyList(segment_mapping, mapping)
     }
 
     list(
-        text_geom(mapping=text_mapping,
-                  hjust = hjust, nudge_x = offset, stat = StatTreeData, ...)
-        ,
         if (show_segment)
             geom_segment2(mapping = segment_mapping,
-                          linetype = linetype,
+                          linetype = linetype, nudge_x = offset,
                           size = linesize, stat = StatTreeData, ...)
+       ,
+        label_geom(mapping=text_mapping,
+                   hjust = hjust, nudge_x = offset, stat = StatTreeData, ...)
 
-            ## geom_tipsegment(mapping = segment_mapping,
-            ##                 offset = offset,
-            ##                 linetype = linetype,
-            ##                 size = linesize, ...)
     )
 }
 

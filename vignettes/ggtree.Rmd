@@ -94,7 +94,25 @@ The `ggtree` package provides several layers to annotate a phylogenetic tree, in
 
 It supports annotating phylogenetic trees with analyses obtained from R packages and other commonly used evolutionary software. User's specific annotation (e.g. experimental data) can be integrated to annotate phylogenetic trees. `ggtree` provides `write.jplace` function to combine Newick tree file and user's own data to a single `jplace` file that can be parsed and the data can be used to annotate the tree directly in `ggtree`.
 
-`ggtree` integrates `phylopic` database and silhouette images of organisms can be downloaded and used to annotate phylogenetic directly. `ggtree` also supports using local images to annotate a phylogenetic tree.
+`r Biocpkg('ggtree')` supports drawing *phylomoji* using emoji fonts. Please
+refer to the `r CRANpkg("emojifont")` package vignette via the following
+command:
+
+```r
+vignette("phylomoji", package="emojifont")
+```
+
+
+`r Biocpkg('ggtree')` integrates *phylopic* database and silhouette images of
+organisms can be downloaded and used to annotate phylogenetic directly. `r
+Biocpkg('ggtree')` also supports using local or remote images to annotate a
+phylogenetic tree. Please refer to the `r CRANpkg('ggimage')` package vignette, which
+can be opened via the following command:
+
+```r
+vignette("ggtree", package = "ggimage")
+```
+
 
 Visualizing an annotated phylogenetic tree with numerical matrix (e.g. genotype table), multiple sequence alignment and subplots are also supported in `ggtree`. Examples of annotating phylogenetic trees can be found in the [Tree Annotation](treeAnnotation.html) and [Advance Tree Annotation](advanceTreeAnnotation.html) vignettes.
 
