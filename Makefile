@@ -7,7 +7,7 @@ all: rd readme check clean
 alldocs: site rd readme
 
 rd:
-	Rscript -e 'roxygen2::roxygenise(".")'
+	Rscript -e 'devtools::document()'
 
 readme:
 	Rscript -e 'rmarkdown::render("README.Rmd")'
