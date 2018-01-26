@@ -1,5 +1,7 @@
 ## setOldClass("phylo")
 ## setOldClass("multiPhylo")
+
+##' @importFrom methods setOldClass
 setOldClass("ggtree")
 
 
