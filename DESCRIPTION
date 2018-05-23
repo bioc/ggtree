@@ -18,7 +18,7 @@ Depends:
 Imports:
     ape,
     dplyr,
-    ggplot2 (>= 2.2.0),
+    ggplot2 (>= 2.2.1.9000),
     grDevices,
     grid,
     magrittr,
