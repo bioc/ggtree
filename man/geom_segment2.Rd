@@ -6,8 +6,8 @@
 \usage{
 geom_segment2(mapping = NULL, data = NULL, stat = "identity",
   position = "identity", arrow = NULL, arrow.fill = NULL,
-  lineend = "butt", na.rm = FALSE, show.legend = NA, inherit.aes = TRUE,
-  nudge_x = 0, ...)
+  lineend = "butt", na.rm = FALSE, show.legend = NA,
+  inherit.aes = TRUE, nudge_x = 0, ...)
 }
 \arguments{
 \item{mapping}{aes mapping}
