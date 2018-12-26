@@ -25,7 +25,7 @@ set_branch_length <- function(tree_object, branch.length) {
         stop("branch.length should be numerical attributes...")
     }
 
-    edge <- as_data_frame(phylo$edge)
+    edge <- as_tibble(phylo$edge)
     colnames(edge) <- c("parent", "node")
 
     dd <- full_join(edge, tree_anno, by = "node")
