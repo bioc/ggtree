@@ -40,8 +40,8 @@ geom_range <- function(range = "length_0.95_HPD", branch.length = "branch.length
 StatRange <- ggproto("StatRange", Stat,
                      compute_group = function(self, data, scales, params) {
                          df <- data[!is.na(data[["lower"]]),]
-                         df[["lower"]] <- df[["lower"]] + df[["x"]] - df[["branch.length"]]
-                         df[["upper"]] <- df[["upper"]] + df[["x"]] - df[["branch.length"]]
+                         df[["lower"]] <- df[["lower"]] + df[["x"]] - as.numeric(df[["branch.length"]])
+                         df[["upper"]] <- df[["upper"]] + df[["x"]] - as.numeric(df[["branch.length"]])
 
                          data.frame(x = df[["lower"]],
                                     xend = df[["upper"]],
