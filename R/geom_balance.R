@@ -182,7 +182,7 @@ get_balance_position <- function(treeview, node, direction) {
 
 get_balance_position_ <- function(data, node, direction) {
     ## ch <- tryCatch(getChild.df(data, node), error=function(e) NULL)
-    ch <- tryCatch(tidytree::child(data, node)$node, error=function(e) NULL)
+    ch <- tryCatch(tidytree:::child.tbl_tree(data, node)$node, error=function(e) NULL)
 
     if (length(ch) < 2 || is.null(ch)){
         stop('balance cannot be a tip')
@@ -191,9 +191,12 @@ get_balance_position_ <- function(data, node, direction) {
     }
 
     i <- match(node, data$node)
-    sp <- tryCatch(offspring(data, ch[direction])$node,
+    sp <- tryCatch(tidytree:::offspring.tbl_tree(data, ch[direction])$node,
                    error=function(e) ch[direction])
-    sp.all <- offspring(data, i)$node
+    if (length(sp ) == 0 ) {
+        sp <- ch[direction]
+    }
+    sp.all <- tidytree:::offspring.tbl_tree(data, i)$node
     sp.df <- data[match(sp, data$node),]
     sp.all.df <- data[match(sp.all, data$node),]
     n.df <- data[i,]
