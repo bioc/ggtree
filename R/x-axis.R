@@ -50,7 +50,7 @@ scale_x_range <- function() {
 ##' @author guangchuang yu
 revts <- function(treeview) {
     x <- treeview$data$x
-    mx <- max(x)
+    mx <- max(x, na.rm=TRUE)
     treeview$data$x <- x - mx
     treeview$data$branch <- treeview$data$branch - mx
     treeview
