@@ -61,11 +61,11 @@ layoutEqualAngle <- function(model, branch.length ){
     ## NOTE: Angles (start, end, angle) are in half-rotation units (radians/pi or degrees/180)
 
     ## create and assign NA to the following fields.
-    df$x <- NA
-    df$y <- NA
-    df$start <- NA # Start angle of segment of subtree.
-    df$end   <- NA # End angle of segment of subtree
-    df$angle <- NA # Orthogonal angle to beta for tip labels.
+    df$x <- 0
+    df$y <- 0
+    df$start <- 0 # Start angle of segment of subtree.
+    df$end   <- 0 # End angle of segment of subtree
+    df$angle <- 0 # Orthogonal angle to beta for tip labels.
     ## Initialize root node position and angles.
     df[root, "x"] <- 0
     df[root, "y"] <- 0
