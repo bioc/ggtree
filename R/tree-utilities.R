@@ -597,7 +597,7 @@ getSubtreeUnrooted <- function(tree, node){
 getSubtreeUnrooted.df <- function(df, node){
   # get subtree for each child node.
                                         # children_ids <- getChild.df(df, node)
-    children_ids <- tidytree::child(df, node)$node
+    children_ids <- child.tbl_tree(df, node)$node
   if (length(children_ids) == 0L) return(NULL)
   # if node leaf, return nothing.
 
@@ -609,7 +609,7 @@ getSubtreeUnrooted.df <- function(df, node){
 
   # The remaining nodes that are not found in the child subtrees are the remaining subtree nodes.
   # ie, parent node and all other nodes. We don't care how they are connected, just their id.
-  parent_id <- parent(df, node)$node
+  parent_id <- parent.tbl_tree(df, node)$node
   # If node is not root.
   if ((length(parent_id) > 0) & (length(remaining_nodes) > 0)) {
     subtrees = tibble::add_row(subtrees, node = parent_id, subtree = list(remaining_nodes))
