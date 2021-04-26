@@ -54,7 +54,12 @@ right-hand side? See \code{\link[ape:ladderize]{ape::ladderize()}} for more info
 
 \item{xlim}{x limits, only works for 'inward_circular' layout}
 
-\item{...}{additional parameter}
+\item{...}{additional parameter
+
+some dot arguments:
+\itemize{
+\item \code{nsplit} integer, the number of branch blocks divided when 'continuous' is not "none", default is 200.
+}}
 }
 \value{
 tree
@@ -84,7 +89,7 @@ other associated data. Methods in Ecology and Evolution, 8(1):28-36.
 }
 }
 \seealso{
-\code{\link[ape:ladderize]{ape::ladderize()}}
+\code{\link[=geom_tree]{geom_tree()}}
 }
 \author{
 Yu Guangchuang

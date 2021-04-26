@@ -80,14 +80,27 @@ geom_nodepoint <- function(mapping = NULL, data = NULL,
 }
 
 
-##' add root point
+##' geom_rootpoint is used to add root point
 ##'
+##' geom_rootpoint inherit from geom_point2, it is used to display and customize the points on the root
 ##'
 ##' @title geom_rootpoint
 ##' @inheritParams geom_point2
 ##' @return root point layer
 ##' @export
 ##' @author Guangchuang Yu
+##' @references `r ggtree:::ggtree_references()`
+##' @seealso
+##'  [geom_point][ggplot2::geom_point]; 
+##'  [geom_rootpoint] add point of root; 
+##'  [geom_nodepoint] add points of internal nodes; 
+##'  [geom_tippoint] add points of external nodes (also known as tips or leaves).
+##' @examples
+##' library(ggtree)
+##' tr <- rtree(10)
+##' ##  add root point
+##' ggtree(tr) + geom_rootpoint()
+##' ggtree(tr) + geom_rootpoint(size=2,color="red",shape=2)
 geom_rootpoint <- function(mapping = NULL, data = NULL,
                            position = "identity", na.rm = FALSE,
                            show.legend = NA, inherit.aes = TRUE, ...) {

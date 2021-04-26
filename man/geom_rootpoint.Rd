@@ -38,7 +38,32 @@ rather then combining with them.}
 root point layer
 }
 \description{
-add root point
+geom_rootpoint is used to add root point
+}
+\details{
+geom_rootpoint inherit from geom_point2, it is used to display and customize the points on the root
+}
+\examples{
+library(ggtree)
+tr <- rtree(10)
+##  add root point
+ggtree(tr) + geom_rootpoint()
+ggtree(tr) + geom_rootpoint(size=2,color="red",shape=2)
+}
+\references{
+\enumerate{
+\item Guangchuang Yu. Using ggtree to visualize data on tree-like structures. Current Protocols in Bioinformatics, 2020, 69:e96. doi:10.1002/cpbi.96
+\item Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods for mapping and visualizing associated data on phylogeny using ggtree. Molecular Biology and Evolution 2018, 35(12):3041-3043. doi:10.1093/molbev/msy194
+\item Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
+}
+
+For more information, please refer to the online book:Data Integration, Manipulation and Visualization of Phylogenetic Trees.\url{http://yulab-smu.top/treedata-book/}
+}
+\seealso{
+\link[ggplot2:geom_point]{geom_point};
+\link{geom_rootpoint} add point of root;
+\link{geom_nodepoint} add points of internal nodes;
+\link{geom_tippoint} add points of external nodes (also known as tips or leaves).
 }
 \author{
 Guangchuang Yu
