@@ -1,7 +1,7 @@
 Package: ggtree
 Type: Package
 Title: an R package for visualization of tree and annotation data
-Version: 3.6.0
+Version: 3.6.1
 Authors@R: c(
        person("Guangchuang", "Yu",     email = "guangchuangyu@gmail.com", role = c("aut", "cre", "cph"), 
             comment = c(ORCID = "0000-0002-6485-8781")),
@@ -25,7 +25,7 @@ Imports:
     ape,
     aplot,
     dplyr,
-    ggplot2 (>= 3.0.0),
+    ggplot2 (> 3.3.6),
     grid,
     magrittr,
     methods,
