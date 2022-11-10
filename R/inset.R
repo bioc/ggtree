@@ -100,7 +100,7 @@ nodebar <- function(data, cols, color, alpha=1, position="stack") {
                                      theme_inset()
                    )
 
-    if (missingArg(color) || is.null(color) || is.na(color)) {
+    if (missingArg(color) || is.null(color) || any(is.na(color))) {
         ## do nothing
     } else {
         bars <- lapply(bars, function(p) p+scale_fill_manual(values=color))
