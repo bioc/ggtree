@@ -136,5 +136,16 @@ GeomSegmentGGtree <- ggproto("GeomSegmentGGtree", GeomSegment,
                              )
 
 
-empty <- getFromNamespace("empty", "ggplot2")
-`%||%` <- getFromNamespace("%||%", "ggplot2")
+is_waiver <- function(x){
+  inherits(x, "waiver")
+}
+
+empty <- function(df){
+    is.null(df) || nrow(df) == 0 || ncol(df) == 0 || is_waiver(df)
+}
+
+`%||%` <- function (a, b){
+    if (!is.null(a))
+        a
+    else b
+}

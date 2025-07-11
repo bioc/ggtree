@@ -2,7 +2,7 @@
 ##' @importFrom ggplot2 ggplot_add
 ##' @method ggplot_add facet_xlim
 ##' @export
-ggplot_add.facet_xlim <- function(object, plot, object_name) {
+ggplot_add.facet_xlim <- function(object, plot, object_name, ...) {
     var <- panel_col_var(plot)
     free_x <- plot$facet$params$free$x
     if (!is.null(free_x)) {
@@ -17,12 +17,12 @@ ggplot_add.facet_xlim <- function(object, plot, object_name) {
     }
 
     obj <- geom_blank(aes_(x = ~x), dummy, inherit.aes = FALSE)
-    ggplot_add(obj, plot, object_name)
+    ggplot_add(obj, plot, object_name, ...)
 }
 
 ##' @method ggplot_add zoom_clade
 ##' @export
-ggplot_add.zoom_clade <- function(object, plot, object_name) {
+ggplot_add.zoom_clade <- function(object, plot, object_name, ...) {
     zoomClade(plot, object$node, xexpand=object$xexpand)
 }
 
@@ -83,17 +83,17 @@ ggplot_add.zoom_clade <- function(object, plot, object_name) {
 
 ##' @method ggplot_add geom_range
 ##' @export
-ggplot_add.geom_range <- function(object, plot, object_name) {
+ggplot_add.geom_range <- function(object, plot, object_name, ...) {
     obj <- do.call(geom_range_internal, object)
     assign(x = "range_range", value = object$range, envir = plot$plot_env)
     assign(x = "range_center", value = object$center, envir = plot$plot_env)
-    ggplot_add(obj, plot, object_name)
+    ggplot_add(obj, plot, object_name, ...)
 }
 
 ##' @method ggplot_add layout_ggtree
 ##' @importFrom ggplot2 expansion
 ##' @export
-ggplot_add.layout_ggtree <- function(object, plot, object_name) {
+ggplot_add.layout_ggtree <- function(object, plot, object_name, ...) {
     if(object$layout == 'fan') {
         return(open_tree(plot, object$angle))
     }
@@ -115,7 +115,7 @@ ggplot_add.layout_ggtree <- function(object, plot, object_name) {
     } else { ## rectangular
         obj <- coord_cartesian(clip = 'off')
     }
-    plot <- ggplot_add(obj, plot, object_name)
+    plot <- ggplot_add(obj, plot, object_name, ...)
     plot$plot_env <- build_new_plot_env(plot$plot_env)
     assign("layout", object$layout, envir = plot$plot_env)
     return(plot)
@@ -125,7 +125,7 @@ ggplot_add.layout_ggtree <- function(object, plot, object_name) {
 
 ##' @method ggplot_add range_xaxis
 ##' @export
-ggplot_add.range_xaxis <- function(object, plot, object_name) {
+ggplot_add.range_xaxis <- function(object, plot, object_name, ...) {
     d <- plot$data
     center <- get("range_center", envir = plot$plot_env)
     if (center == "auto") {
@@ -140,12 +140,12 @@ ggplot_add.range_xaxis <- function(object, plot, object_name) {
 
     diff <- cc - d$x[i]
     obj <- scale_x_continuous(sec.axis = ~. + diff)
-    ggplot_add(obj, plot, object_name)
+    ggplot_add(obj, plot, object_name, ...)
 }
 
 ##' @method ggplot_add ggexpand
 ##' @export
-ggplot_add.ggexpand <- function(object, plot, object_name) {
+ggplot_add.ggexpand <- function(object, plot, object_name, ...) {
     side <- object$side
     obj <- NULL
     if (side == 'h' || side == 'hv') {
@@ -157,7 +157,7 @@ ggplot_add.ggexpand <- function(object, plot, object_name) {
         lim <- ggexpand_internal(plot, object$ratio, object$direction, 'y')
         obj <- list(obj, ggplot2::expand_limits(y = lim))
     }
-    ggplot_add(obj, plot, object_name)
+    ggplot_add(obj, plot, object_name, ...)
 }
 
 ggexpand_internal <- function(plot, ratio, direction, var) {
@@ -178,25 +178,25 @@ ggexpand_internal <- function(plot, ratio, direction, var) {
 
 ##' @method ggplot_add tree_inset
 ##' @export
-ggplot_add.tree_inset <- function(object, plot, object_name) {
+ggplot_add.tree_inset <- function(object, plot, object_name, ...) {
     object$tree_view <- plot
     do.call(inset, object)
 }
 
 ##' @method ggplot_add facet_plot
 ##' @export
-ggplot_add.facet_plot <- function(object, plot, object_name) {
+ggplot_add.facet_plot <- function(object, plot, object_name, ...) {
     plot <- add_panel(plot, object$panel)
     df <- plot %+>% object$data
     params <- c(list(data = df, mapping = object$mapping),
                 object$params)
     obj <- do.call(object$geom, params)
-    ggplot_add(obj, plot, object_name)
+    ggplot_add(obj, plot, object_name, ...)
 }
 
 ##' @method ggplot_add tiplab
 ##' @export
-ggplot_add.tiplab <- function(object, plot, object_name) {
+ggplot_add.tiplab <- function(object, plot, object_name, ...) {
     layout <- get_layout(plot)
     if (layout == 'dendrogram'){
         if( object$hjust == 0 ){
@@ -227,7 +227,7 @@ ggplot_add.tiplab <- function(object, plot, object_name) {
         #object$geom <- NULL
         object$offset <- NULL
         object$nodelab <- NULL
-        res <- ggplot_add.tiplab_ylab(object, plot, object_name)
+        res <- ggplot_add.tiplab_ylab(object, plot, object_name, ...)
         return(res)
     }
 
@@ -239,12 +239,12 @@ ggplot_add.tiplab <- function(object, plot, object_name) {
         #object$nodelab <- NULL
         ly <- do.call(geom_tiplab_rectangular, object)
     }
-    ggplot_add(ly, plot, object_name)
+    ggplot_add(ly, plot, object_name, ...)
 }
 
 ##' @method ggplot_add tiplab_ylab
 ##' @export
-ggplot_add.tiplab_ylab <- function(object, plot, object_name) {
+ggplot_add.tiplab_ylab <- function(object, plot, object_name, ...) {
     layout <- get_layout(plot)
     if (is.null(object$position)) {
         if (layout == "rectangular") {
@@ -295,7 +295,7 @@ ggplot_add.tiplab_ylab <- function(object, plot, object_name) {
 
 ##' @method ggplot_add cladelabel
 ##' @export
-ggplot_add.cladelabel <- function(object, plot, object_name) {
+ggplot_add.cladelabel <- function(object, plot, object_name, ...) {
     #layout <- get("layout", envir = plot$plot_env)
     layout <- get_layout(plot)
     if (layout == "unrooted" || layout == "daylight") {
@@ -303,12 +303,12 @@ ggplot_add.cladelabel <- function(object, plot, object_name) {
     } else {
         ly <- do.call(geom_cladelabel_rectangular, object)
     }
-    ggplot_add(ly, plot, object_name)
+    ggplot_add(ly, plot, object_name, ...)
 }
 
 ##' @method ggplot_add cladelab
 ##' @export
-ggplot_add.cladelab <- function(object, plot, object_name){
+ggplot_add.cladelab <- function(object, plot, object_name, ...){
     #layout <- get("layout", envir=plot$plot_env)
     layout <- get_layout(plot)
     if (is.null(object$mapping) && (is.null(object$node) || is.null(object$label))){
@@ -433,7 +433,7 @@ ggplot_add.cladelab <- function(object, plot, object_name){
         bar_obj <- do.call("geom_segment", bar_obj)
     }
     obj <- list(annot_obj, bar_obj)
-    ggplot_add(obj, plot, object_name)
+    ggplot_add(obj, plot, object_name, ...)
 }
 
 ## ##' @method ggplot_add hilight
@@ -461,7 +461,7 @@ ggplot_add.cladelab <- function(object, plot, object_name){
 ##' @method ggplot_add hilight
 ##' @importFrom rlang quo_name
 ##' @export
-ggplot_add.hilight <- function(object, plot, object_name){
+ggplot_add.hilight <- function(object, plot, object_name, ...){
     #layout <- get("layout", envir = plot$plot_env)
     layout <- get_layout(plot)
     if (!is.character(layout)) layout <- "rectangular"
@@ -572,7 +572,7 @@ ggplot_add.hilight <- function(object, plot, object_name){
                      roundrect = choose_hilight_layer(object = object, type = "roundrect")	 
                   )
     }
-    plot <- ggplot_add(ly, plot, object_name)
+    plot <- ggplot_add(ly, plot, object_name, ...)
     if (object$to.bottom){
         idx <- length(plot$layers)
         plot$layers <- c(plot$layers[idx], plot$layers[-idx])
@@ -583,7 +583,7 @@ ggplot_add.hilight <- function(object, plot, object_name){
 
 ##' @method ggplot_add striplabel
 ##' @export
-ggplot_add.striplabel <- function(object, plot, object_name) {
+ggplot_add.striplabel <- function(object, plot, object_name, ...) {
     d <- plot$data
     strip_df <- get_striplabel_position(d, object$taxa1, object$taxa2,
                                         object$offset, object$align,
@@ -620,12 +620,12 @@ ggplot_add.striplabel <- function(object, plot, object_name) {
                               )
     }
 
-    ggplot_add(list(ly_bar, ly_text), plot, object_name)
+    ggplot_add(list(ly_bar, ly_text), plot, object_name, ...)
 }
 
 ##' @method ggplot_add striplab
 ##' @export
-ggplot_add.striplab <- function(object, plot, object_name){
+ggplot_add.striplab <- function(object, plot, object_name, ...){
     layout <- get_layout(plot) 
     if (is.null(object$data) && is.null(object$taxa1) && is.null(object$taxa2) && is.null(object$label)){
         abort("data and taxa1, taxa2, label can't be NULL simultaneously!")
@@ -739,14 +739,14 @@ ggplot_add.striplab <- function(object, plot, object_name){
     bar_obj <- do.call("geom_segment", bar_obj)
     #}
     obj <- list(annot_obj, bar_obj)
-    ggplot_add(obj, plot, object_name)
+    ggplot_add(obj, plot, object_name, ...)
 }
 
 ##' @importFrom ggplot2 scale_x_continuous
 ##' @importFrom ggplot2 scale_x_date
 ##' @method ggplot_add scale_ggtree
 ##' @export
-ggplot_add.scale_ggtree <- function(object, plot, object_name) {
+ggplot_add.scale_ggtree <- function(object, plot, object_name, ...) {
     mrsd <- get("mrsd", envir = plot$plot_env)
     if (!is.null(mrsd) && inherits(plot$data$x, "Date")) {
         x <- Date2decimal(plot$data$x)
@@ -789,13 +789,13 @@ ggplot_add.scale_ggtree <- function(object, plot, object_name) {
     } else {
         obj <- scale_x_continuous(breaks=breaks, labels=labels)
     }
-    ggplot_add(obj, plot, object_name)
+    ggplot_add(obj, plot, object_name, ...)
 }
 
 ##' @importFrom ggplot2 aes_
 ##' @importFrom rlang abort as_name
 ##' @export
-ggplot_add.taxalink <- function(object, plot, object_name){
+ggplot_add.taxalink <- function(object, plot, object_name, ...){
     #layout <- get("layout", envir = plot$plot_env)
     layout <- get_layout(plot)
     if (object$outward=="auto"){
@@ -848,5 +848,5 @@ ggplot_add.taxalink <- function(object, plot, object_name){
     }
     params <- c(list(data=object$data, mapping=object$mapping, outward=object$outward), object$params)
     obj <- do.call("geom_curvelink", params)
-    ggplot_add(obj, plot, object_name)
+    ggplot_add(obj, plot, object_name, ...)
 }
