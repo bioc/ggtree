@@ -22,7 +22,7 @@
 
 -->
 
-# ggtree 4.1.1
+# ggtree 4.0.1
 
 + bug fixed in `geom_striplab` (2025-10-30, Thu, #677)
 
