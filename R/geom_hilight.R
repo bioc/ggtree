@@ -299,7 +299,7 @@ geom_hilight_encircle2 <- function(data=NULL,
           )
 }
 
-check_linewidth <- function(data, name) {
+.check_linewidth <- function(data, name) {
   if (is.null(data$linewidth) && !is.null(data$size)) {
     warning(paste0(
       "Using the `size` aesthetic with ", name, " was deprecated in ggplot2 3.4.0.\n",
@@ -326,7 +326,7 @@ GeomHilightEncircle <- ggproto("GeomHilightEncircle", Geom,
                                 draw_key = draw_key_polygon,
                                 rename_size = TRUE,
                                 draw_panel = function(self, data, panel_scales, coord){
-                                    data <- check_linewidth(data, snake_class(self))
+                                    data <- .check_linewidth(data, snake_class(self))
                                     globs <- lapply(split(data, data$clade_root_node), function(i)
                                                    get_glob_encircle(i, panel_scales, coord))
                                     ggname("geom_hilight_encircle2", do.call("grobTree", globs))
@@ -741,7 +741,7 @@ GeomInteractiveHilightEncircle <- ggproto(
                                                )
          )
       }
-      data <- check_linewidth(data, snake_class(self))
+      data <- .check_linewidth(data, snake_class(self))
       globs <- lapply(split(data, data$clade_root_node), function(i){
                       encircle <- get_glob_encircle(i, panel_scales, coord)
                       index <- duplicated(i[,!names(i) %in% c("x", "y")])
