@@ -17,6 +17,14 @@
 
 -->
 
+# ggtree 4.2.1
+
++ layers added to a `ggtree` plot before `geom_facet()` are no longer drawn in the external panel: they were left without a `.panel` value and so matched every panel of the `facet_grid()`, duplicating e.g. a `geom_cladelab()` segment and label inside the annotation panel. `add_panel()` now assigns those layers the `Tree` panel (2026-10-29, Thu, #711, #713, #714)
+
+# ggtree 4.2.0
+
++ Bioconductor RELEASE_3_23 (2026-04-29, Wed)
+
 # ggtree 4.1.2
 
 + make `gheatmap()` robust to missing tree labels in `data` row names by warning and auto-filling missing rows with `NA` instead of stopping (2026-03-23, Mon)
